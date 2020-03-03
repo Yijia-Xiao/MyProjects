@@ -1,0 +1,31 @@
+CREATE DATABASE OOP;
+
+USE OOP;
+
+CREATE TABLE poi(lkj DATE, mnb INT, bvc INT, dfj CHAR, PRIMARY KEY(lkj));
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2028-01-02, 2, 3, "a");
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2028-01-02, 3, 4, "a");
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2028-01-02, 4, 5, "a");
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2028-01-02, 5, 6, "a");
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2028-01-02, 6, 7, "a");
+
+CREATE TABLE poq(lkj DATE, mnb INT, bvc INT, dfj CHAR, PRIMARY KEY(lkj));
+
+INSERT INTO poq(lkj, mnb, bvc, dfj) VALUES (2038-01-02, 2, 3, "a");
+
+INSERT INTO poq(lkj, mnb, bvc, dfj) VALUES (2028-01-02, 3, 4, "a");
+
+INSERT INTO poq(lkj, mnb, bvc, dfj) VALUES (2058-01-04, 4, 5, "a");
+
+INSERT INTO poq(lkj, mnb, bvc, dfj) VALUES (2028-01-02, 5, 6, "a");
+
+INSERT INTO poq(lkj, mnb, bvc, dfj) VALUES (2078-05-02, 6, 7, "a");
+
+SELECT lkj FROM poi;
+SELECT lkj FROM poq;
+SELECT lkj FROM poi UNION SELECT lkj FROM poq ORDER BY lkj;

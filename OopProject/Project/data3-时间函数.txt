@@ -1,0 +1,27 @@
+CREATE DATABASE OOP;
+
+USE OOP;
+
+CREATE TABLE poi(lkj DATE, mnb INT, bvc INT, dfj CHAR, PRIMARY KEY(lkj));
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2028-01-02, 2, 3, "a");
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2018-01-02, 3, 4, "a");
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2018-01-04, 4, 5, "a");
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2018-01-03, 5, 6, "a");
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2018-05-02, 6, 7, "a");
+
+SELECT lkj from poi;
+
+UPDATE poi SET dfj="b" WHERE lkj>3;
+
+UPDATE poi SET dfj="b" WHERE lkj>3 OR mnb=2;
+
+SELECT dfj from poi;
+DROP DATABASE OOP;
+
+SELECT ADDTIME('11:11:11', 5)
+SELECT ADDDATE("2019-06-21", INTERVAL 11 DAY);

@@ -1,0 +1,18 @@
+CREATE DATABASE OOP;
+
+USE OOP;
+
+CREATE TABLE poi(lkj DATE, mnb INT, bvc INT, dfj CHAR, PRIMARY KEY(lkj));
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2028-01-02, 2, 3, "absdsf");
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2038-09-02, 3, 4, "qfqwfzsds");
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2048-08-02, 4, 5, "zvbzbbef");
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2058-07-02, 5, 6, "jrtjdrksser");
+
+INSERT INTO poi(lkj, mnb, bvc, dfj) VALUES (2068-06-02, 6, 7, "sjsexfbxdf");
+
+SELECT * from poi;
+SELECT * from poi  WHERE dfj LIKE '%ser';
