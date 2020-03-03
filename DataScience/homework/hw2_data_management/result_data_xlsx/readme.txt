@@ -1,0 +1,2 @@
+1. The xlsx file in the 'stage2_data' folder is the final version.
+2. Considering that in the process, there are some actions that may alter the data(like update and delete), so the originally processed data are stored in 'stage1_data' folder.

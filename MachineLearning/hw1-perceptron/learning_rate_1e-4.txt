@@ -1,0 +1,201 @@
+epoch: 0
+acc = 0.484848, loss = 0.509465
+epoch: 100
+acc = 0.909091, loss = 0.022910
+epoch: 200
+acc = 0.969697, loss = 0.007013
+epoch: 300
+acc = 0.939394, loss = 0.006144
+epoch: 400
+acc = 0.939394, loss = 0.005153
+epoch: 500
+acc = 0.909091, loss = 0.004712
+epoch: 600
+acc = 0.909091, loss = 0.005364
+epoch: 700
+acc = 0.878788, loss = 0.005614
+epoch: 800
+acc = 0.909091, loss = 0.006183
+epoch: 900
+acc = 0.909091, loss = 0.006069
+epoch: 1000
+acc = 0.909091, loss = 0.005467
+epoch: 1100
+acc = 0.909091, loss = 0.004783
+epoch: 1200
+acc = 0.909091, loss = 0.004135
+epoch: 1300
+acc = 0.909091, loss = 0.003409
+epoch: 1400
+acc = 0.909091, loss = 0.002675
+epoch: 1500
+acc = 0.909091, loss = 0.001921
+epoch: 1600
+acc = 0.909091, loss = 0.001157
+epoch: 1700
+acc = 0.909091, loss = 0.000462
+epoch: 1800
+acc = 0.939394, loss = 0.000050
+epoch: 1900
+acc = 0.909091, loss = 0.000048
+epoch: 2000
+acc = 0.939394, loss = 0.000037
+epoch: 2100
+acc = 0.939394, loss = 0.000022
+epoch: 2200
+acc = 0.878788, loss = 0.000044
+epoch: 2300
+acc = 0.909091, loss = 0.000050
+epoch: 2400
+acc = 0.909091, loss = 0.000049
+epoch: 2500
+acc = 0.878788, loss = 0.000059
+epoch: 2600
+acc = 0.909091, loss = 0.000043
+epoch: 2700
+acc = 0.909091, loss = 0.000070
+epoch: 2800
+acc = 0.878788, loss = 0.000040
+epoch: 2900
+acc = 0.909091, loss = 0.000033
+epoch: 3000
+acc = 0.909091, loss = 0.000037
+epoch: 3100
+acc = 0.848485, loss = 0.000063
+epoch: 3200
+acc = 0.909091, loss = 0.000054
+epoch: 3300
+acc = 0.909091, loss = 0.000015
+epoch: 3400
+acc = 0.909091, loss = 0.000027
+epoch: 3500
+acc = 0.878788, loss = 0.000062
+epoch: 3600
+acc = 0.909091, loss = 0.000026
+epoch: 3700
+acc = 0.939394, loss = 0.000044
+epoch: 3800
+acc = 0.909091, loss = 0.000054
+epoch: 3900
+acc = 0.939394, loss = 0.000031
+epoch: 4000
+acc = 0.939394, loss = 0.000035
+epoch: 4100
+acc = 0.909091, loss = 0.000022
+epoch: 4200
+acc = 0.878788, loss = 0.000035
+epoch: 4300
+acc = 0.878788, loss = 0.000062
+epoch: 4400
+acc = 0.909091, loss = 0.000035
+epoch: 4500
+acc = 0.939394, loss = 0.000036
+epoch: 4600
+acc = 0.878788, loss = 0.000059
+epoch: 4700
+acc = 0.909091, loss = 0.000057
+epoch: 4800
+acc = 0.878788, loss = 0.000048
+epoch: 4900
+acc = 0.939394, loss = 0.000032
+epoch: 5000
+acc = 0.878788, loss = 0.000062
+epoch: 5100
+acc = 0.939394, loss = 0.000036
+epoch: 5200
+acc = 0.878788, loss = 0.000055
+epoch: 5300
+acc = 0.939394, loss = 0.000030
+epoch: 5400
+acc = 0.848485, loss = 0.000080
+epoch: 5500
+acc = 0.939394, loss = 0.000041
+epoch: 5600
+acc = 0.878788, loss = 0.000033
+epoch: 5700
+acc = 0.909091, loss = 0.000045
+epoch: 5800
+acc = 0.878788, loss = 0.000048
+epoch: 5900
+acc = 0.939394, loss = 0.000036
+epoch: 6000
+acc = 0.878788, loss = 0.000088
+epoch: 6100
+acc = 0.878788, loss = 0.000038
+epoch: 6200
+acc = 0.878788, loss = 0.000067
+epoch: 6300
+acc = 0.909091, loss = 0.000059
+epoch: 6400
+acc = 0.909091, loss = 0.000059
+epoch: 6500
+acc = 0.909091, loss = 0.000049
+epoch: 6600
+acc = 0.909091, loss = 0.000064
+epoch: 6700
+acc = 0.909091, loss = 0.000036
+epoch: 6800
+acc = 0.909091, loss = 0.000049
+epoch: 6900
+acc = 0.909091, loss = 0.000062
+epoch: 7000
+acc = 0.878788, loss = 0.000041
+epoch: 7100
+acc = 0.878788, loss = 0.000075
+epoch: 7200
+acc = 0.848485, loss = 0.000074
+epoch: 7300
+acc = 0.878788, loss = 0.000072
+epoch: 7400
+acc = 0.909091, loss = 0.000045
+epoch: 7500
+acc = 0.939394, loss = 0.000044
+epoch: 7600
+acc = 0.909091, loss = 0.000058
+epoch: 7700
+acc = 0.939394, loss = 0.000056
+epoch: 7800
+acc = 0.939394, loss = 0.000026
+epoch: 7900
+acc = 0.848485, loss = 0.000071
+epoch: 8000
+acc = 0.909091, loss = 0.000061
+epoch: 8100
+acc = 0.878788, loss = 0.000072
+epoch: 8200
+acc = 0.909091, loss = 0.000048
+epoch: 8300
+acc = 0.878788, loss = 0.000052
+epoch: 8400
+acc = 0.878788, loss = 0.000069
+epoch: 8500
+acc = 0.939394, loss = 0.000037
+epoch: 8600
+acc = 0.939394, loss = 0.000044
+epoch: 8700
+acc = 0.878788, loss = 0.000046
+epoch: 8800
+acc = 0.878788, loss = 0.000045
+epoch: 8900
+acc = 0.909091, loss = 0.000032
+epoch: 9000
+acc = 0.939394, loss = 0.000024
+epoch: 9100
+acc = 0.878788, loss = 0.000052
+epoch: 9200
+acc = 0.878788, loss = 0.000092
+epoch: 9300
+acc = 0.909091, loss = 0.000063
+epoch: 9400
+acc = 0.939394, loss = 0.000024
+epoch: 9500
+acc = 0.878788, loss = 0.000057
+epoch: 9600
+acc = 0.939394, loss = 0.000024
+epoch: 9700
+acc = 0.909091, loss = 0.000045
+epoch: 9800
+acc = 0.909091, loss = 0.000029
+epoch: 9900
+acc = 0.939394, loss = 0.000042
+Final Test On Test_Set Acc = 0.900000, Loss = 0.000048
