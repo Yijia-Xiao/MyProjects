@@ -1,0 +1,871 @@
+(base) yijia@supermicro:~/emotion$
+
+
+
+import json
+from bert_serving.client import BertClient 
+bc = BertClient(port=5700, port_out=5701) 
+
+with open('data/test.text', 'r') as f: 
+test = json.load(f) 
+
+with open('data/train.text', 'r') as f: 
+train = json.load(f)
+
+train = [l.split() for l in train]
+test = [l.split() for l in test]
+
+import tensorflow as tf
+train_res = []
+
+from tqdm import tqdm
+import numpy as np
+
+for l in tqdm(train):  
+train_res.append(bc.encode(l))
+
+test_res = []
+for l in tqdm(test):  
+test_res.append(bc.encode(l))
+np.save('train_res.npy', train_res)
+np.save('test_res.npy', test_res)
+
+
+
+Script:
+
+
+Start: 11:10
+LOG:
+Python 3.6.10 |Anaconda, Inc.| (default, Mar 25 2020, 23:51:54) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.13.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: with open('data/train.text', 'r') as f: 
+   ...:     a = f.readlines() 
+   ...:                                                                                                                                                      
+
+In [2]: len(a)                                                                                                                                               
+Out[2]: 1
+
+In [3]: import json                                                                                                                                          
+
+In [4]: with open('data/train.text', 'r') as f: 
+   ...:     a = json.load(f) 
+   ...:      
+   ...:                                                                                                                                                      
+
+In [5]: len(a)                                                                                                                                               
+Out[5]: 2342
+
+In [6]: a[0]                                                                                                                                                 
+Out[6]: '女生 发表 轻生 日志 获 网友 连夜 搜 救 本报 讯 永别 朋友 永别 世界 前天 晚上 清华 毕业 女生 小陈 网 主页 写下 日志 后 失踪 日志 中 表示 欲 寻短见 得知 消息 校友 途径 连夜 发起 搜 救 昨天 上午 记者 了解 民警 已经 找到 小陈 已经 危险 了解 小 陈 本科 研究生 分别 就读 中国 传媒 大学 清华大学 今年 毕业 后 进入 国家机关 下属 媒体 工作 前天 晚上 7点 44分 小陈 网 主页 发表 篇 题为 永别 朋友 日志 后 失踪 篇 日志 很快 引起 关注 当天 晚上 10点 关注 清华大学 微 博 协会 会长 刘若晴 微 博 发布 紧急 寻 人 信息 呼吁 网友 路 留 心眼 儿 救人 命 随后 网友 展开 搜 救 昨天 上午 条 寻找 小 陈 微 博 已 转发 8000 次 小陈 同学 寻 遍 宣武门 长椿 街 西单 传媒 大学 清华大学 不断 网上 交流 搜 救 信息 汇总 清华大学 微 博 协会 微 博 从前 晚 10点 昨天 凌晨 3点 小时 新 搜 救 信息 上面 发布 昨天 上午 北京市 公安局 官方 微 博 发布消息 称 北京 警方 积极 努力 开展 相关 工作 随后 市 公安局 勤务 指挥部 传来 好 消息 警方 连夜 工作 民警 丰台 六里桥 附近 找到 同学 同学 平安无事 现场 自杀 情况 危险 民警 正在 进一步 调查 中\n'
+
+In [7]: from bert_serving.client import BertClient                                                                                                           
+
+In [8]: bc = BertClient()                                                                                                                                    
+
+In [9]: bc.encode(['Hi', 'Good'])                                                                                                                            
+Out[9]: 
+array([[-0.07443655,  0.1579423 ,  0.44979104, ..., -0.05841346,
+         0.00956043, -0.19738895],
+       [-0.13485827,  0.04089193, -0.06400991, ..., -0.05429162,
+         0.13494545,  0.13360198]], dtype=float32)
+
+In [10]: bc.encode(['Hi', '你好'])                                                                                                                           
+Out[10]: 
+array([[-0.07443655,  0.1579423 ,  0.44979104, ..., -0.05841346,
+         0.00956043, -0.19738895],
+       [-0.14029881, -0.2127363 ,  0.2991966 , ...,  0.4277635 ,
+         0.453879  ,  0.29098436]], dtype=float32)
+
+In [11]: bc.encode(['Hi', '你好'])                                                                                                                           
+Out[11]: 
+array([[-0.07443655,  0.1579423 ,  0.44979104, ..., -0.05841346,
+         0.00956043, -0.19738895],
+       [-0.14029881, -0.2127363 ,  0.2991966 , ...,  0.4277635 ,
+         0.453879  ,  0.29098436]], dtype=float32)
+
+In [12]: bc.encode(['Hi', '你好么'])                                                                                                                         
+Out[12]: 
+array([[-0.07443655,  0.1579423 ,  0.44979104, ..., -0.05841346,
+         0.00956043, -0.19738895],
+       [-0.24931833, -0.2377136 ,  0.36356348, ...,  0.57281125,
+         0.62573874,  0.24217112]], dtype=float32)
+
+In [13]: bc.encode(['Hi', '水电费极短时间来看尊敬的佛is剪短发噢is就大佛埃及的搜房'])                                                                         
+Out[13]: 
+array([[-0.07443655,  0.1579423 ,  0.44979104, ..., -0.05841346,
+         0.00956043, -0.19738895],
+       [-0.18493365, -0.5168107 ,  0.6315453 , ...,  0.7073094 ,
+         0.5853867 , -0.38885343]], dtype=float32)
+
+In [14]: !ls                                                                                                                                                 
+data  dataprocess.py  main.py  mlp.py  model.py  para  __pycache__  Untitled1.ipynb  Untitled.ipynb  utils.py
+
+In [15]: !pwd                                                                                                                                                
+/home/yijia/emotion/new
+
+In [16]: !cd data/                                                                                                                                           
+
+In [17]: !ls                                                                                                                                                 
+data  dataprocess.py  main.py  mlp.py  model.py  para  __pycache__  Untitled1.ipynb  Untitled.ipynb  utils.py
+
+In [18]: with open('data/train.text', 'r') as f: 
+    ...:     train = json.load(f) 
+    ...:                                                                                                                                                     
+
+In [19]: len(train)                                                                                                                                          
+Out[19]: 2342
+
+In [20]: train[0]                                                                                                                                            
+Out[20]: '女生 发表 轻生 日志 获 网友 连夜 搜 救 本报 讯 永别 朋友 永别 世界 前天 晚上 清华 毕业 女生 小陈 网 主页 写下 日志 后 失踪 日志 中 表示 欲 寻短见 得知 消息 校友 途径 连夜 发起 搜 救 昨天 上午 记者 了解 民警 已经 找到 小陈 已经 危险 了解 小 陈 本科 研究生 分别 就读 中国 传媒 大学 清华大学 今年 毕业 后 进入 国家机关 下属 媒体 工作 前天 晚上 7点 44分 小陈 网 主页 发表 篇 题为 永别 朋友 日志 后 失踪 篇 日志 很快 引起 关注 当天 晚上 10点 关注 清华大学 微 博 协会 会长 刘若晴 微 博 发布 紧急 寻 人 信息 呼吁 网友 路 留 心眼 儿 救人 命 随后 网友 展开 搜 救 昨天 上午 条 寻找 小 陈 微 博 已 转发 8000 次 小陈 同学 寻 遍 宣武门 长椿 街 西单 传媒 大学 清华大学 不断 网上 交流 搜 救 信息 汇总 清华大学 微 博 协会 微 博 从前 晚 10点 昨天 凌晨 3点 小时 新 搜 救 信息 上面 发布 昨天 上午 北京市 公安局 官方 微 博 发布消息 称 北京 警方 积极 努力 开展 相关 工作 随后 市 公安局 勤务 指挥部 传来 好 消息 警方 连夜 工作 民警 丰台 六里桥 附近 找到 同学 同学 平安无事 现场 自杀 情况 危险 民警 正在 进一步 调查 中\n'
+
+In [21]: with open('data/test.text', 'r') as f: 
+    ...:     test = json.load(f) 
+    ...:                                                                                                                                                     
+
+In [22]: len(test)                                                                                                                                           
+Out[22]: 2228
+
+In [23]: bc.encode(test[0])                                                                                                                                  
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-23-b5e2b2dffc1f> in <module>
+----> 1 bc.encode(test[0])
+
+~/anaconda3/lib/python3.6/site-packages/bert_serving/client/__init__.py in arg_wrapper(self, *args, **kwargs)
+    204                 self.receiver.setsockopt(zmq.RCVTIMEO, self.timeout)
+    205             try:
+--> 206                 return func(self, *args, **kwargs)
+    207             except zmq.error.Again as _e:
+    208                 t_e = TimeoutError(
+
+~/anaconda3/lib/python3.6/site-packages/bert_serving/client/__init__.py in encode(self, texts, blocking, is_tokenized, show_tokens)
+    285             self._check_input_lst_lst_str(texts)
+    286         else:
+--> 287             self._check_input_lst_str(texts)
+    288 
+    289         if self.length_limit is None:
+
+~/anaconda3/lib/python3.6/site-packages/bert_serving/client/__init__.py in _check_input_lst_str(texts)
+    392     def _check_input_lst_str(texts):
+    393         if not isinstance(texts, list):
+--> 394             raise TypeError('"%s" must be %s, but received %s' % (texts, type([]), type(texts)))
+    395         if not len(texts):
+    396             raise ValueError(
+
+TypeError: "交警 电台 合力 救助 误 吞 水银 女童 本报 讯 记者 展明辉 昨晚 6时 许 顺义区 后 沙 峪 小区 岁 女童 珊珊 化名 误 喝 下 温度计 水银 随后 交通 台 频 发 播报 交警 帮助 下 时 40 分钟 珊珊 送 儿童 医院 检查 女童 无 生命 危险 珊珊 母亲 李 女士 称 昨日 珊珊 发烧 晚上 6时 许 孩子 姥爷 珊珊 量 体温 发现 温度 些 高 遂 楼 取 药 下 楼 发现 温度计 头 不见 碎 玻璃 一些 水银 留 地上 李 女士 说 当时 部分 水银 留 孩子 嘴角 处 一再 询问 下 珊珊 承认 温度计 咬 坏 珊珊 姥爷 称 女儿 随后 找 名 朋友 开车 孩子 送 空港 医院 对方 表示 无法 收治 建议 前往 儿童 医院 治疗 距离 儿童 医院 远 李 女士 说 顺义 赶往 市里 期间 慌忙 拨打 110 求助 警方 回复 称 交警 疏导 沿途 路段 随后 交通 台 获悉 此事 循环 播放 提示 信息 呼吁 司机 注意 送 珊珊 就医 京 牌 白色 卡罗拉 轿车 孩子 生命 通道 昨晚 7时 许 儿童 医院 急诊 内科 珊珊 依偎 母亲 怀里 双手 缩 护士 进行 抽血 化验 众人 劝说 珊珊 皱 眉 慢慢 伸出 右手 配合 医生 取 走 血样 40 分钟 医院 太 感谢 珊珊 喝 完 酸奶 蹦 跳 李 女士 情绪 逐渐 平复 下来 昨晚 8时 许 珊珊 血样 化验 中 医生 介绍 之前 拍 片 情况 珊珊 确实 摄入 温度计 中 汞 幸 量 无 生命 危险 120 急救 中心 提示 市民 遇到 误 吞 水银 情况 量 少 水银 进入 体内 消化道 吸收 自行 排 误 吞 水银 量 当事人 口服 牛奶 蛋清 使 蛋白质 水银 结合 保护 胃 黏膜 伤口 碰到 水银 应 医院 中毒 防治 科 进行 检查 出现 中毒 现象 再 进行 治疗
+" must be <class 'list'>, but received <class 'str'>
+
+In [24]: bc.encode([test[0]])                                                                                                                                
+/home/yijia/anaconda3/lib/python3.6/site-packages/bert_serving/client/__init__.py:299: UserWarning: some of your sentences have more tokens than "max_seq_len=25" set on the server, as consequence you may get less-accurate or truncated embeddings.
+here is what you can do:
+- disable the length-check by create a new "BertClient(check_length=False)" when you do not want to display this warning
+- or, start a new server with a larger "max_seq_len"
+  '- or, start a new server with a larger "max_seq_len"' % self.length_limit)
+Out[24]: 
+array([[-0.46855596, -0.65147   ,  0.9795553 , ...,  0.75775206,
+         0.6072509 , -0.16334082]], dtype=float32)
+
+In [25]: help(BertClient)                                                                                                                                    
+
+
+In [26]: maxlen = 0 
+    ...: for i in test: 
+    ...:     maxlen = max(maxlen, len(i)) 
+    ...:                                                                                                                                                     
+
+In [27]: maxlen                                                                                                                                              
+Out[27]: 8802
+
+In [28]: for i in train: 
+    ...:     maxlen = max(maxlen, len(i)) 
+    ...:                                                                                                                                                     
+
+In [29]: maxlen                                                                                                                                              
+Out[29]: 8802
+
+In [30]: for i in train: 
+    ...:     if maxlen == len(i): 
+    ...:         print(i) 
+    ...:         break 
+    ...:          
+    ...:                                                                                                                                                     
+
+In [31]: for i in test: 
+    ...:     if maxlen == len(i): 
+    ...:         print(i) 
+    ...:         break 
+    ...:          
+    ...:                                                                                                                                                     
+病人 医院 输液 成 植物人 家属 疑 院方 修改 病历 ----- 连云港 2010 3.22 医疗 事故 拷问 甲 医院 医术 医德 中国 经济 网 北京 4月 9日 讯 记者 曹 峰 峻 郭树宾 2010年 3月 21日 23时 左右 连云港市 53 岁 退休 女 职工 卢兴元 患 胆囊 结石 该市 东方 医院 转入 连云港 中医院 准备 进行 手术 治疗 入院 22日 中午 12时 左右 时间段 医院 妈妈 做 胸 透 尿常规 彩超 心电图 检查 只 CT 准备 下午 做 检查 情况 显示 正常 卢兴元 女儿 陈静 女婿 张云峰 告诉 记者 22日 中午 12时 注射 药水 当天 下午 一共 注射 组 药水 第四 组 剩 5时 妈妈 倒 出事 卢兴元 输液 突然 成 植物人 后 家属 一直 追 责 放 维 权 未 断 时间 一晃 两年 至今 无 处 说法 家 人 介绍 医院 名 不符 甲 实 无 床头 巡视 卡 插卡 处 只 块 空白 板 执行 护士 注射 药水 时 注射 药水 履行 告知 义务 那天 家 人 在场 证实 两 只 袋装 药水 护士 换 瓶装 药水 250ML 玻璃 注射液 结束 后 护士 陈 宁波 更换 瓶 250ML 药水 第四 组 药水 一直 知道 药 当时 问 句 药 陈 护士 明确 回答 药水 氯化钾 滴 慢 一些 在场 人 清楚 听到 小张 说 老婆 陈 静 当时 250ML 玻璃瓶 说 滴 慢 14时 40 左右 张云峰 陈静 住院处 办 住院 手续 现场 患者 卢 兴 元 妹妹 人 在场 14时 58分 卢 兴 元 起床 厕所 妹妹 搀扶 21 床 走向 20 床 尾 时 走 临床 病友 谈笑 中 无声无息 软 倒 未 发出 声 面部 表情 当时 药水 已经 输 左右 临床 病友 患者 妹妹 立即 呼救 家属 反映 情况 医院 管理 混乱 抢救 措施 处 程序 存在 失当 细节 贻误 抢救 最佳 时机 造成 患者 脑 部 缺氧 时间 长 造成 患者 脑 部 组织 不可逆转 性 损伤 原因 卢 兴 元 医疗 事故 诉讼 代理 律师 说 律师 相关 医学 咨询 称 2005 国际 心 肺 复苏 指南 心脏 骤 停 处理 常用 方法 目击者 第一 时间 CPR 框 颤 间断 胸 外 心脏 按压 有人 目击 病人 倒下 颤 器 应 给予 次 吹气 后 摸 脉搏 施 救 10秒钟 确认 无 脉 施 救 应 开启 颤 器 放置 电极板 检查 心律 患者 家属 反映 现实 中 院方 做到 参与 抢救 全 过程 张云峰 介绍 ICU 医生 进行 胸 外 心脏 按压 过程 中 慌张 下 后 起身 离开 房间 打电话 导致 中途 停止 记者 患者 家属 提供 录音 录 相 资料 中 听 院方 代表 稽 主任 患者 家属 谈话 认为 心脏 抢救 按压 过程 中 停下 观察 一阵子 停止 心脏 恢复 患者 家属 认可 小张 认为 人命关天 危急 关头 抢救 病人 医生 私自 停下 抢救 离开 生命 垂危 病人 走 病房 打电话 说 发火 说 救人 电话 稽 主任 回 事 说 发 火 以后 回来 段 话 说明 稽 主任 承认 抢救 医生 确实 存在 玩忽职守 事实 患者 家属 称 抢救 过程 中 医务 人员 氧气 包 当时 听 两 位 护士 说 院方 代表 录音 对话 中 解释 麻醉 专用 器件 所有 普通 医生 做 段 话 意味着 连云港 中医院 确实 医生 氧气 包 当时 抢救 现场 确实 存在 抢救 人员 使用 氧气 包 真实 情况 患者 家属 称 抢救 现场 电源插 排 导致 相关 仪器 正常 工作 记者 患者 院方 对话 录音 中 听到 稽 主任 说 心电图 电源插 排 插 说 前面 插排 插 抢救 千钧一发 用于 抢救 器械 重要 缺少 项 器械 造成 前功尽弃 抢救 过程 中 重要 细节 连云港 中医院 一个 主任医师 嘴里 如同 儿戏 样 轻描淡写 张云峰 说 种种 应该 情况 再次 严重 耽误 有效 抢救 时间 心脏 骤 停 心 肺 复苏 历时 达 40 分钟 导致 岳母 长时间 脑 缺氧 情况 下 脑 组织 坏死 张云峰 说 医院 发生 医疗 事故 后 拒 承认 过错 包括 药 方面 过失 抢救 因素 责任 全部 推 岳母 身体 医院 先是 认为 卢兴元 心脏病 医院 信口 雌黄 随即 遭到 卢 家人 反驳 往年 体检 记录 入院 前 心电图 记录 检查 全部 正常 医院 却 不折不扣 认为 家族 遗传性 隐性 心脏病 同样 遭到 患者 家属 责问 卢兴元 父亲 母亲 匀 尚 世 平均 已 83 岁 高龄 家里 亲人 全部 健在 无 遗传性 心脏病 源 卢兴元 家族 遗传性 隐性 心脏病 家属 有理 节 质疑 院方 无言以对 无理 张云峰 气愤 说 院方 排除 心脏 原因 后 心脏 骤 停 24 天 后 作出 显示 脑 部 处 1-2mm 突起 部位 推论 岳母 动脉瘤 称 动脉瘤 破裂 导致 心脏 骤 停 第一 医院 前来 会诊 脑外科 刘 主任 结论 确认 脑 部 水肿 推断 脑 部 出血 迹象 并未 确认 脑 部 出血 导致 心脏 骤 停 期间 退休 学科 专家 提示 认为 蛛 网膜 下 腔 血 动脉瘤 引发 患者 心脏 骤 停 情况 患者 通常 突然 出现 难以忍受 头 裂开 样 疼痛 生平 最 剧烈 头痛 表现 人 表现 脖子 后面 剧痛 低头 患者 剧烈 呕吐 烦躁 不安 一部分 患者 出现 性 意识 丧失 持续 时间 情况 下 长 发病 休克 通常 突然 间 难以忍受 剧烈 痛苦 倒 休克 前 发出 某种 痛苦 叫声 卢 兴 元 当天 发病 表现 倒 前 秒 临床 病友 谈笑 无 头痛 别处 不适 特别 倒 时 声息 面部 未 痛苦 表现 明显 符合 蛛 网膜 下 腔 出血 脑 动脉瘤 发病 情况 院方 炮制 理由 开脱 责任 违规 篡改 伪造 当天 下午 医嘱 销毁 当天 过量 使用 引发 岳母 休克 心脏 骤 停 氯化钾 药瓶 张云峰 介绍 称 事发 3月 28日 家 人 怀疑 重点 转移 出事 时 挂 药水 时间 已 好 天 院方 规 封存 当时 药水 瓶 回答 说 已 回收 处理 努力 4月 6日 医院 废旧 药品 存放 处 找 出事 当天 楼 所有 病房 病人 药水 瓶 包括 患者 出事 当天 挂 瓶 250ML 果糖 +654-2+ 硫酸镁 药水 瓶 照片 已 保存 唯独 当天 250ML 氯化钾 药水 瓶 家属 要求 复印 病人 病历 发现 3月 22日 患者 姐夫 林 签字 医嘱 少 张 取而代之 张 林 签字 治疗 时间 治疗 过程 完全 相同 医嘱 记者 审 患者 家属 提供 份 原始 病历 明细 份 入院 明细 中 记者 看到 3月 22日 医院 开 药 明细 中 10ML 氯化钾 两 支 长期 医嘱 载明 出事 当天 氯化钾 药 已经 值班 医生 签字 执行者 核对 签字 停止 执行 处 无 停止 执行 记录 足以 证明 当天 确实 氯化钾 药物 记者 确实 看到 两 份 一时 间 同一 诊疗 内容 出现 人 杜生旺 书写 两 份 临时 医嘱 记者 看到 医疗 纠纷 至关重要 直接 影响 相关 事实 出现 两 种 截然不同 记载 事发 时 值班 医生 份 吴庆军 份 杜生旺 事发 时 执行 护士 份 朱海东 份 陈 宁波 硫酸镁 药水 输液 起始 时间 份 12:00 份 12:45 院方 改写 医嘱 目的 在于 当天 下午 输液 时间 缩短 45分钟 原来 医嘱 记载 12点 第一 组 药水 出事 时 正好 接 第4 组 氯化钾 药水 篡改 医嘱 第一 组 药水 时间 变成 12点 45分 证实 当天 组 药水 中 输 出事 时 只能 第3 组 第4 组 致命 氯化钾 未 接 患者 家属 当地 相关 医学 专家 咨询 证实 该院 主治医生 稽 主任 氯化钾 相关 情况 做出 相应 解释 氯化钾 浓度 超过 0.3% 250ml 液体 中 最 加入 10% 氯化钾 7.5ml 只 加 5ml 静脉 滴注 速度 成人 60 滴 分 话 后果 浓度过高 滴速 严禁 静脉 推 注 致 心跳 骤 停 疑 致命 氯化钾 该院 当天 长期 医嘱 药 费用 明细表 当天 氯化钾 两 支 10ML 操作执行 记载 何在 出事 最 敏感 时刻 最 敏感 药物 记载 做 篡改 事故 最 关键 证据 最 关键 时刻 作 规 封存 使 销声匿迹 属于 招 做 贼 心虚 患者 家属 医院 寻求 说法 无望 情况 下 当年 四月 份 委托 律师 准备 民事 诉讼 讨 说法 2010年 6月 家属 口头 连云港市 新浦区 法院 提起 民事 诉讼 法院 要求 先 申请 医疗 事故 鉴定 鉴定 结论 后 再 起诉 家属 未 申请 医疗 事故 鉴定 2010年 9月 底 受损 日 月 后 申请 损害 后果 鉴定 规定 患者 损害 后果 申请 法医 鉴定 10月 连云港市 第三 医院 司法 鉴定 鉴定 患者 目前 呈 迁 延性 昏迷 状态 通俗 称 植物人 构成 壹 级 伤残 需要 完全 护理 依赖 2010年 10月 后 患者 家属 新浦区 法院 提起 诉讼 告知 留下 材料 等待 审查 直到 2011年 1月 正式 立案 受理 期间 未 出具 书面 材料 2011年 2月 22日 法院 第一 次 开庭 审理 同年 5月 院方 申请 医疗 事故 鉴定 6月 患者 家属 提出 院方 提供 病历 资料 真实 伪造 临时 医嘱 连云港市 医疗 事故 鉴定 委员会 作出 中止 鉴定 决定 法院 一直 此案 处于 暂停 状态 法院 审 理 理由 院方 同一 医生 书写 两 份 内容 事故 发生 时 值班 医生 执行 护士 输液 开始时间 截然不同 临时 医嘱 行为 无 违反 国家有关 病历 书写 规范 是否 构成 法律 意义 伪造 病历 法院 无法 此直接 认定 要求 家属 专业 鉴定 机构 申请 鉴定 确定 家属 认为 人 杜生旺 书写 份 临时 医嘱 第一 次 庭审 中 已经 得到 书写 承认 无需 鉴定 真伪 情况 院方 是否 属于 伪造 证据 属于 法院 庭审 相关 医疗 规定 查明 认定 事实 根本 无 需 家属 耗费 巨资 申请 鉴定 咨询 相关 司法 鉴定 机构 得出 意见 已经 承认 人 书写 病历 无需 鉴定 真伪 只 需 法院 相关 医疗 法规 这种 行为 是否 构成 伪造 行为 进行 认定 双方 一直 呈 僵局 状态 2011年 1月 今 一年 有余 医院 问 睬 案件 遥遥无期 中国 经济 网 记者 3月 15日 16日 江苏省 连云港市 事件 进行 两 天 相关 采访 调查 患者 家属 代理 律师 出事 当时 病房 患者 个别 知情 医生 相关 病历 书 证 细致 采访 查看 已经 掌握 连云港 中医院 个别 医疗 人员 卢兴元 医疗 抢救 过程 确实 存在 管理 混乱 措施 相关 违规 问题 家属 投诉 情况 基础 理由 质疑 连云港 中医院 医术 医德 问题 院方 安排 法律 顾问 接受 采访 位 法律 顾问 似乎 忘记 接受 医院 委派 接受 记者 采访 一度 采访 现场 演变 成 代表 院方 患者 家属 代理 律师 进行 对簿公堂 法庭 此案 情况 却 只字不提 3月 16日 上午 下午 记者 采访 院方 时 遇见 院方 无 礼 蛮横 令 记者 坚信 该院 相关 质疑 理由 16日 上午 记者 位 热心 护士长 带领 下 前往 医院 领导 层 楼 旨在 想 领导 安排 相关 当班 当事 医务 人员 配合 调查 当天 相关 情况 努力 当天 诊疗 过程 真实 情况 患者 负责 医院 说 清楚 辩解 相关 理由 得知 领导 情况 后 护士长 敲 单位 丰 副 院长 门 门 打开 门口 站 位 身着 护士 服 漂亮 年轻 护士 欢迎 记者 记者 刚刚 进 门 说明 来意 时 位 丰 副 院长 立即 站 门 横 记者 面前 表示 欢迎 也许 认为 记者 医院 唱 赞歌 善 意图 二者 记者 有意 破坏 护士 谈话 气氛 也许 种 因素 扭 合 一起 促使 位 丰 副 院长 记者 神情 严肃 演变 成 横 眉 冷 语态 呈现 高屋建瓴 架势 一边 训斥 热心 护士长 一边 轰 记者 找 找 办公室 语气 声 声 铿锵 带有 地方 方言 成份 语调 明显 呈 高亢 趋势 看到 记者 努力 说服 听取 记者 说 清 来意 表明 记者 努力 使 事件 趋 客观 情况 后 丰 副 院长 显然 不耐烦 突然 意志 坚定 弃 室 犹 虑 护士 记者 留 办公室 来到 旁边 医院 办公室 正在 位 女 工作人员 谈 工作 江 主任 接待 记者 记者 相关 证件 手续 进行 一番 验证 后 示意 记者 604 会议室 等待 安排 人员 接受 采访 记者 会议室 等待 四十分 钟 却 医院 法律 顾问 记者 需要 采访 当天 出事 时 相关 当事人 情况 下 记者 只能 抱 既来之 安 心理 努力 了解 思想 准备 位 所谓 法律 顾问 显得 够 冷静 丰 副 院长 对待 面前 记者 采取 强势 态度 似乎 忘记 接受 医院 委派 接受 记者 采访 无 理由 无 礼 要求 记者 出示 已经 接受 院方 验证 相关 证件 采访 手续 一度 采访 现场 演变 成 代表 院方 患者 家属 代理 律师 进行 对簿公堂 法庭 记者 录 相 资料 看到 院方 患者 家属 协调 问题 时 恶劣 态度 患者 女儿 说 坐 下来 解决 事情 点 耐心 好 好 位 陈云 护士长 回答 事 先 顿 再 解决 位 小小的 护士长 面对 患者 家属 狂妄 连云港 中医院 下 气焰 多么 嚣张 记者 采访 努力 还原 当天 出事 现场 情况 圆满 达到 目的 争取 靠近 事实 真相 一点 记者 考虑 主动 采取 息事宁人 态度 次 证件 手续 交给 位 法律 顾问 查验 医院 派 记录 人员 进行 登记 记者 满足 位 所谓 院方 派 接受 记者 采访 法律 顾问 要求 后 只 目前 本案 已经 进入 法律 程序 等待 审理 再 作 回答 句 话 完成 采访 只 句 话 医院 迂回 曲折 拨 人 还要 关 关 验证 记者 身份 记者 觉得 医院 缺乏 应有 诚意 有意 刁难 媒体 当天 下午 医院 主管 单位 连云港 卫生局 办公室 罗 主任 协调 下 医院 答应 医 政 处 负责人员 记者 见面 记者 折回 医院 604 会议室 等待 约 小时 后 医院 办公室 江 主任 前来 再 次 验证 登记 记者 证件 医 政 处 相关 人员 前来 连云港市 中医院 百般 阻挠 无 礼 致使 记者 无法 院方 进行 采访 北京 盈 科 律师 事务所 高级 律师 陈栋 此案 处理 医疗 事故 问题 认为 采访 调查 情况 连云港 中医院 明显 存在 过错 问题 隐藏 毁弃 疑 似 药液 医疗 事故 处理 条例 第十七 条 规定 疑 似 输液 输血 注射 药物 引起 不良 后果 医 患 双方 应当 共同 现场 实物 进行 封存 启封 依法 进行 检验 调查 情况 连云港 中医院 显然 做到 疑 似 问题 药瓶 隐藏 毁弃 涉嫌 伪造 病历 医疗 事故 处理 条例 第九 条 规定 严禁 涂改 伪造 隐匿 销毁 抢夺 病历 资料 出事 当天 同一时 间 同一 诊疗 过程 却 出现 人 医院 杜生旺 书写 份 临时 医嘱 医疗 纠纷 至关重要 直接 影响 相关 事实 出现 两 种 截然不同 记载 改动 原来 医嘱 一直 隐藏 伪造 医嘱 医生 身上 长 达 天 久 患者 家属 发现 后 院方 强烈 要求 下 说明 医院 面对 事故 原因 事实 医院 处理 事故 违规 违法 情况 连云港 中医院 事故 确实 存在 过错 相关 法规 医院 应该 承担 事故 过错 责任 全国 著名 法学家 张赞宁 教授 接受 网 采访 时 本案 相关 法律 问题 认为 医疗 事故 处理 条例 第十七 条 疑 似 输液 输血 注射 药物 引起 不良 后果 医 患 双方 应当 共同 现场 实物 进行 封存 规定 发生 疑 似 输液 过敏 严重 输液 不良 反应 时 医方 应 主动 告知 患 共同 现场 实物 进行 封存 医方 未能 做 难以 查明 案情 真相 医院 应 负 举 证 责任 法律 诉讼 问题 伤害 事实 立案 一定 先 医疗 事故 鉴定 立案 连云港市 新浦区 人民法院 非 先 医疗 事故 鉴定 立案 显然 法 无 第三 例 出现 版本 份 临时 医嘱 份 标明 一时 间 版本 医嘱 药 时间 医师 签署 执行 护士 签名 证明 假 份 假 院方 合理 解释 原始 病历 隐匿 销毁 篡改 伪造 嫌 医疗 事故 处理 条例 侵权 责任 法 第五十八 条 伪造 病历 即可 推 过错 相关 规定 当事 医院 出现 违反 条例 伪造 病历 行为 法院 判 令 医疗 承担 相关 过错 责任 采访 已经 结束 卢兴元 家属 申诉 路程 却 知道 尽头 身心交瘁 卢 兴 元 丈夫 陈 如来 老人 两年 一直 守 老伴 身边 料理 已 知 人间 冷暖 植物人 生活 还要 不断 做 吸 痰 吸 氧 按摩 护理 老伴 每天 医疗 护理 费 六七百 元 左右 事实上 药 护理 全 做 医生 护士 陈静 张永峰 两口子 忙于 单位 工作 照顾 两 年幼 孩童 还要 拎 匆忙 中 做 好 饭菜 来回 奔波 60 公里 路程 墟 沟 新浦 之间 已经 两年 医院 爸爸 送 饭 爸爸 吃 后 再 饭菜 加工 成 液状 妈妈 割 开 喉咙 泵入 妈妈 体内 女儿 陈静 记者 说 实在 太 疲惫 撑 住 不知 次 想 楼上 跳 诉讼 道路 中 不知 鉴定 程序 走 不知 维权 路 漫漫 尽头 爸爸 陈 如来 却 面对 记者 镜头 坚定 说 还要 口 气 良知 道德 医院 官司 下去 老伴 讨 说法 两 天 采访 记者 时常 一些 事 见证 震惊 悲哀 无论是 医术 疑 药 失当 抢救 时 混乱 医务 人员 缺乏 应有 技能 玩忽职守 出事 后 违规 销毁 疑 似 问题 药瓶 藏匿 伪造 反映 同一 兼程 却 内容 截然不同 病历 无论是 患者 家属 事后 面对 医院 违规 强权 应该 复制 患者 相关 病历 遭到 院方 无情 拒绝 种种 困境 尴尬 医院 面对 国家级 新闻 媒体 呈现 强势 无 礼 制造 闹剧 阻挠 采访 调查 嚣张 令 记者 患者 家属 刻骨铭心 事实 记者 想象 发生 一个 国家 级 甲等 医院 中 记者 医院 甲 医 质 医德 产生 怀疑 无独有偶 记者 采访 调查 过程 中 发现 连云港 中医院 孽 迹 遭 曝光 网 媒 现实 举报 法院 判决 医院 败诉 时有发生 2005年 10月 15日 江苏 法制 报 题为 连云港 中医院 死亡 证明 儿戏 报道 广泛 转载 采访 过程 中 遇到 位 罗军役 患者 家属 连云港 中医院 提出 项 投诉 投诉 医院 医德 医风 医 质 存在 严重 问题 其父 78 岁 罗玉田 患 右 下 肺炎 09年 3月 9日 5月 12日 进 该院 治疗 该院 医术 水平 低下 犯 下 常识 性 低级 错误 使 父 治疗 65 天 中 滥用 998 支 抗生素 导致 其父 肺部 真菌 严重 感染 引发 并发症 导致 呼吸 衰竭 死亡 事后 连云港 中医院 同样 隐瞒 真相 千方百计 掩盖 违规 药 事实 致使 此案 一直 拖拉 2011年 12月 法院 判决 医院 判决 败诉 后 报复 病人 家属 患 病人 无故 撵 走 剥夺 患者 治疗 权 投诉 该院 患者 罗玉田 住院 治疗 期间 骗取 医 保费 20609.4 元 记者 当事人 提供 连云港 中医院 医 保 病人 费用 清单 该院 长期 医嘱 进行 发现 长期 医嘱 单显示 罗玉田 65 天 实际 医疗 费用 56609.06 元 医 保费 清单 实际 收费 77218.48 元 医院 收 罗玉田 医 保费 20609 元 罗军役 准备 进行 揭发 医院 诉至 法庭 次 次 医疗 事故 最终 得到 处理结果 本次 采访 调查 甲 医院 输液 中 致 人 成 植物人 事件 肯定 尘埃落定 患者 家属 付出 成本 代价 却 巨大 迟到 公正 患者 家属 长久 等待 漫漫 申诉 中伤 肝 沥 胆 这种 伤痛 最终 经济 补偿 很快 抹 人 心灵 深处 长 驻 散 记者 采访 回来 整理 稿件 时 采访 时 场景 人物 一一 回放 官位 高 却 耍 官腔 丰 副 院长 懂 礼貌 却 反复 耍弄 手腕 江 主任 记者 激动 就要 吵架 法律 顾问 试想 一个 市级 中医院 国家级 新闻 媒体 表现 蛮横 无 礼 产生 和谐 本地 患者 家属 面对 甲 强势 显得 弱小 害怕 噤 寒蝉 理由 呼吁 一下 当地 相关 法律 部门 法律 此案 判决 本意 完全 责任 单位 得到 应有 处罚 判决 呼吁 人们 尊重 人权 尊重 人道
+
+
+In [32]: exit()                                                                                                                                              
+(base) yijia@supermicro:~/emotion/new$ ipython
+Python 3.6.10 |Anaconda, Inc.| (default, Mar 25 2020, 23:51:54) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.13.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: with open('data/train.text', 'r') as f: 
+   ...:     train = json.load(f) 
+   ...:                                                                                                                                                      
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-1-e425d65f867f> in <module>
+      1 with open('data/train.text', 'r') as f:
+----> 2     train = json.load(f)
+      3 
+
+NameError: name 'json' is not defined
+
+In [2]: exit()                                                                                                                                               
+(base) yijia@supermicro:~/emotion/new$ ipython
+Python 3.6.10 |Anaconda, Inc.| (default, Mar 25 2020, 23:51:54) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.13.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: import json                                                                                                                                          
+
+In [2]: with open('data/train.text', 'r') as f: 
+   ...:     train = json.load(f) 
+   ...:                                                                                                                                                      
+
+In [3]: with open('data/test.text', 'r') as f: 
+   ...:     test = json.load(f) 
+   ...:                                                                                                                                                      
+
+In [4]: from bert_serving.client import BertClient                                                                                                           
+
+In [5]: bc = BertClient()                                                                                                                                    
+^Z
+[2]+  Stopped                 ipython
+(base) yijia@supermicro:~/emotion/new$ ipython
+Python 3.6.10 |Anaconda, Inc.| (default, Mar 25 2020, 23:51:54) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.13.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: import json                                                                                                                                          
+
+In [2]: with open('data/train.text', 'r') as f: 
+   ...:     train = json.load(f) 
+   ...:                                                                                                                                                      
+
+In [3]: with open('data/test.text', 'r') as f: 
+   ...:     test = json.load(f) 
+   ...:                                                                                                                                                      
+
+In [4]: from bert_serving.client import BertClient                                                                                                           
+
+In [5]: bc = BertClient(port=5777, port_out=5778)                                                                                                            
+
+^Z
+[3]+  Stopped                 ipython
+(base) yijia@supermicro:~/emotion/new$ ipython
+Python 3.6.10 |Anaconda, Inc.| (default, Mar 25 2020, 23:51:54) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.13.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: from bert_serving.client import BertClient                                                                                                           
+
+In [2]: bc = BertClient(port=5777, port_out=5778)                                                                                                            
+
+In [3]: import json                                                                                                                                          
+
+In [4]: with open('data/train.text', 'r') as f: 
+   ...:     train = json.load(f) 
+   ...:                                                                                                                                                      
+
+In [5]: with open('data/test.text', 'r') as f: 
+   ...:     test = json.load(f) 
+   ...:                                                                                                                                                      
+
+In [6]: bc.encode(train[0])                                                                                                                                  
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-6-55e1845a313a> in <module>
+----> 1 bc.encode(train[0])
+
+~/anaconda3/lib/python3.6/site-packages/bert_serving/client/__init__.py in arg_wrapper(self, *args, **kwargs)
+    204                 self.receiver.setsockopt(zmq.RCVTIMEO, self.timeout)
+    205             try:
+--> 206                 return func(self, *args, **kwargs)
+    207             except zmq.error.Again as _e:
+    208                 t_e = TimeoutError(
+
+~/anaconda3/lib/python3.6/site-packages/bert_serving/client/__init__.py in encode(self, texts, blocking, is_tokenized, show_tokens)
+    285             self._check_input_lst_lst_str(texts)
+    286         else:
+--> 287             self._check_input_lst_str(texts)
+    288 
+    289         if self.length_limit is None:
+
+~/anaconda3/lib/python3.6/site-packages/bert_serving/client/__init__.py in _check_input_lst_str(texts)
+    392     def _check_input_lst_str(texts):
+    393         if not isinstance(texts, list):
+--> 394             raise TypeError('"%s" must be %s, but received %s' % (texts, type([]), type(texts)))
+    395         if not len(texts):
+    396             raise ValueError(
+
+TypeError: "女生 发表 轻生 日志 获 网友 连夜 搜 救 本报 讯 永别 朋友 永别 世界 前天 晚上 清华 毕业 女生 小陈 网 主页 写下 日志 后 失踪 日志 中 表示 欲 寻短见 得知 消息 校友 途径 连夜 发起 搜 救 昨天 上午 记者 了解 民警 已经 找到 小陈 已经 危险 了解 小 陈 本科 研究生 分别 就读 中国 传媒 大学 清华大学 今年 毕业 后 进入 国家机关 下属 媒体 工作 前天 晚上 7点 44分 小陈 网 主页 发表 篇 题为 永别 朋友 日志 后 失踪 篇 日志 很快 引起 关注 当天 晚上 10点 关注 清华大学 微 博 协会 会长 刘若晴 微 博 发布 紧急 寻 人 信息 呼吁 网友 路 留 心眼 儿 救人 命 随后 网友 展开 搜 救 昨天 上午 条 寻找 小 陈 微 博 已 转发 8000 次 小陈 同学 寻 遍 宣武门 长椿 街 西单 传媒 大学 清华大学 不断 网上 交流 搜 救 信息 汇总 清华大学 微 博 协会 微 博 从前 晚 10点 昨天 凌晨 3点 小时 新 搜 救 信息 上面 发布 昨天 上午 北京市 公安局 官方 微 博 发布消息 称 北京 警方 积极 努力 开展 相关 工作 随后 市 公安局 勤务 指挥部 传来 好 消息 警方 连夜 工作 民警 丰台 六里桥 附近 找到 同学 同学 平安无事 现场 自杀 情况 危险 民警 正在 进一步 调查 中
+" must be <class 'list'>, but received <class 'str'>
+
+In [7]: bc.encode([train[0]])                                                                                                                                
+^Z
+[4]+  Stopped                 ipython
+(base) yijia@supermicro:~/emotion/new$ ipython
+Python 3.6.10 |Anaconda, Inc.| (default, Mar 25 2020, 23:51:54) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.13.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: with open('data/test.text', 'r') as f: 
+   ...:     test = json.load(f) 
+   ...:                                                                                                                                                      
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-1-8ae0e491a0a3> in <module>
+      1 with open('data/test.text', 'r') as f:
+----> 2     test = json.load(f)
+      3 
+
+NameError: name 'json' is not defined
+
+In [2]: exit()                                                                                                                                               
+(base) yijia@supermicro:~/emotion/new$ ipython
+Python 3.6.10 |Anaconda, Inc.| (default, Mar 25 2020, 23:51:54) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.13.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: from bert_serving.client import BertClient                                                                                                           
+
+In [2]: bc = BertClient(port=5777, port_out=5778)                                                                                                            
+
+In [3]: import json                                                                                                                                          
+
+In [4]: with open('data/test.text', 'r') as f: 
+   ...:     test = json.load(f) 
+   ...:                                                                                                                                                      
+
+In [5]: with open('data/train.text', 'r') as f: 
+   ...:     train = json.load(f) 
+   ...:                                                                                                                                                      
+
+In [6]: bc.encode([train[0][:100]])                                                                                                                          
+^Z
+[5]+  Stopped                 ipython
+(base) yijia@supermicro:~/emotion/new$ ipython
+Python 3.6.10 |Anaconda, Inc.| (default, Mar 25 2020, 23:51:54) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.13.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: from bert_serving.client import BertClient 
+In [1]:                                                                                                                                                      
+
+In [1]: import json                                                                                                                                          
+
+In [2]: from bert_serving.client import BertClient                                                                                                           
+
+In [3]: bc = BertClient(port=5777, port_out=5778)                                                                                                            
+
+In [4]:                                                                                                                                                      
+
+In [4]: with open('data/test.text', 'r') as f:  
+   ...:     test = json.load(f)  
+   ...: with open('data/train.text', 'r') as f:  
+   ...:     train = json.load(f)     
+   ...:                                                                                                                                                      
+
+In [5]: bc.encode(['Go', 'nice'])                                                                                                                            
+
+^Z
+[6]+  Stopped                 ipython
+(base) yijia@supermicro:~/emotion/new$ ipython
+Python 3.6.10 |Anaconda, Inc.| (default, Mar 25 2020, 23:51:54) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.13.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: import json                                                                                                                                          
+
+In [2]: from bert_serving.client import BertClient                                                                                                           
+
+In [3]: bc = BertClient(port=5777, port_out=5778)                                                                                                            
+^Z
+[7]+  Stopped                 ipython
+(base) yijia@supermicro:~/emotion/new$ ipython
+Python 3.6.10 |Anaconda, Inc.| (default, Mar 25 2020, 23:51:54) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.13.0 -- An enhanced Interactive Python. Type '?' for help.
+
+In [1]: import json                                                                                                                                          
+
+In [2]: from bert_serving.client import BertClient                                                                                                           
+
+In [3]: bc = BertClient(port=5777, port_out=5778)                                                                                                            
+
+In [4]:                                                                                                                                                      
+
+In [4]: with open('data/test.text', 'r') as f:  
+   ...:     test = json.load(f)  
+   ...: with open('data/train.text', 'r') as f:  
+   ...:     train = json.load(f)     
+   ...:                                                                                                                                                      
+
+In [5]: bc.encode(['go', 'nice'])                                                                                                                            
+Out[5]: 
+array([[ 0.05907365,  0.24180411, -0.00817888, ..., -0.29057103,
+         0.18814808,  0.09881306],
+       [-0.16246067,  0.01322195, -0.06112343, ..., -0.22541864,
+         0.13298632,  0.25753465]], dtype=float32)
+
+In [6]: train[0]                                                                                                                                             
+Out[6]: '女生 发表 轻生 日志 获 网友 连夜 搜 救 本报 讯 永别 朋友 永别 世界 前天 晚上 清华 毕业 女生 小陈 网 主页 写下 日志 后 失踪 日志 中 表示 欲 寻短见 得知 消息 校友 途径 连夜 发起 搜 救 昨天 上午 记者 了解 民警 已经 找到 小陈 已经 危险 了解 小 陈 本科 研究生 分别 就读 中国 传媒 大学 清华大学 今年 毕业 后 进入 国家机关 下属 媒体 工作 前天 晚上 7点 44分 小陈 网 主页 发表 篇 题为 永别 朋友 日志 后 失踪 篇 日志 很快 引起 关注 当天 晚上 10点 关注 清华大学 微 博 协会 会长 刘若晴 微 博 发布 紧急 寻 人 信息 呼吁 网友 路 留 心眼 儿 救人 命 随后 网友 展开 搜 救 昨天 上午 条 寻找 小 陈 微 博 已 转发 8000 次 小陈 同学 寻 遍 宣武门 长椿 街 西单 传媒 大学 清华大学 不断 网上 交流 搜 救 信息 汇总 清华大学 微 博 协会 微 博 从前 晚 10点 昨天 凌晨 3点 小时 新 搜 救 信息 上面 发布 昨天 上午 北京市 公安局 官方 微 博 发布消息 称 北京 警方 积极 努力 开展 相关 工作 随后 市 公安局 勤务 指挥部 传来 好 消息 警方 连夜 工作 民警 丰台 六里桥 附近 找到 同学 同学 平安无事 现场 自杀 情况 危险 民警 正在 进一步 调查 中\n'
+
+In [7]: len(train[0])                                                                                                                                        
+Out[7]: 610
+
+In [8]: segs = trian[0].split()                                                                                                                              
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-8-17ec077617cd> in <module>
+----> 1 segs = trian[0].split()
+
+NameError: name 'trian' is not defined
+
+In [9]: segs = train[0].split()                                                                                                                              
+
+In [10]: len(segs)                                                                                                                                           
+Out[10]: 212
+
+In [11]: emb = bc.encode(segs)                                                                                                                               
+
+In [12]: len(emb)                                                                                                                                            
+Out[12]: 212
+
+In [13]: emb[0]                                                                                                                                              
+Out[13]: 
+array([-0.1779406 ,  0.07491281,  0.3126668 , ..., -0.02196412,
+        0.14834742, -0.1284247 ], dtype=float32)
+
+In [14]: type(emb[0])                                                                                                                                        
+Out[14]: numpy.ndarray
+
+In [15]: fla = emb.flatten()                                                                                                                                 
+
+In [16]: len(fla)                                                                                                                                            
+Out[16]: 217088
+
+In [17]: 212 * 1024                                                                                                                                          
+Out[17]: 217088
+
+In [18]: import tensorflow as tf                                                                                                                             
+2020-05-19 11:06:39.249359: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libnvinfer.so.6'; dlerror: libnvinfer.so.6: cannot open shared object file: No such file or directory
+2020-05-19 11:06:39.249473: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libnvinfer_plugin.so.6'; dlerror: libnvinfer_plugin.so.6: cannot open shared object file: No such file or directory
+2020-05-19 11:06:39.249483: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:30] Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+
+In [19]: fla = tf.reduce_sum(emb, 0)                                                                                                                         
+2020-05-19 11:07:06.986893: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-05-19 11:07:07.274100: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:04:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:07.277623: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 1 with properties: 
+pciBusID: 0000:06:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:07.280930: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 2 with properties: 
+pciBusID: 0000:07:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:07.284378: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 3 with properties: 
+pciBusID: 0000:08:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:07.286961: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 4 with properties: 
+pciBusID: 0000:0c:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:07.290290: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 5 with properties: 
+pciBusID: 0000:0d:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:07.297027: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 6 with properties: 
+pciBusID: 0000:0e:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:07.300328: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 7 with properties: 
+pciBusID: 0000:0f:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:07.335666: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-19 11:07:07.559121: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-19 11:07:07.653824: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-19 11:07:07.723638: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-19 11:07:07.908670: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-19 11:07:07.972055: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-19 11:07:08.707355: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-19 11:07:08.775160: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0, 1, 2, 3, 4, 5, 6, 7
+2020-05-19 11:07:08.784904: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2020-05-19 11:07:08.955998: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2200080000 Hz
+2020-05-19 11:07:08.977485: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x555591b90f30 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-05-19 11:07:08.977556: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-05-19 11:07:10.681970: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x5555912161d0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2020-05-19 11:07:10.682022: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): TITAN X (Pascal), Compute Capability 6.1
+2020-05-19 11:07:10.682034: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (1): TITAN X (Pascal), Compute Capability 6.1
+2020-05-19 11:07:10.682043: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (2): TITAN X (Pascal), Compute Capability 6.1
+2020-05-19 11:07:10.682056: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (3): TITAN X (Pascal), Compute Capability 6.1
+2020-05-19 11:07:10.682067: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (4): TITAN X (Pascal), Compute Capability 6.1
+2020-05-19 11:07:10.682086: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (5): TITAN X (Pascal), Compute Capability 6.1
+2020-05-19 11:07:10.682097: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (6): TITAN X (Pascal), Compute Capability 6.1
+2020-05-19 11:07:10.682107: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (7): TITAN X (Pascal), Compute Capability 6.1
+2020-05-19 11:07:10.730331: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:04:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:10.732543: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 1 with properties: 
+pciBusID: 0000:06:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:10.734754: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 2 with properties: 
+pciBusID: 0000:07:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:10.736841: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 3 with properties: 
+pciBusID: 0000:08:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:10.738355: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 4 with properties: 
+pciBusID: 0000:0c:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:10.743924: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 5 with properties: 
+pciBusID: 0000:0d:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:10.746064: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 6 with properties: 
+pciBusID: 0000:0e:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:10.748050: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 7 with properties: 
+pciBusID: 0000:0f:00.0 name: TITAN X (Pascal) computeCapability: 6.1
+coreClock: 1.531GHz coreCount: 28 deviceMemorySize: 11.91GiB deviceMemoryBandwidth: 447.48GiB/s
+2020-05-19 11:07:10.748132: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-19 11:07:10.748159: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-19 11:07:10.748180: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-19 11:07:10.748200: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-19 11:07:10.748221: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-19 11:07:10.748242: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-19 11:07:10.748263: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-19 11:07:10.779042: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0, 1, 2, 3, 4, 5, 6, 7
+2020-05-19 11:07:10.798237: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-19 11:07:10.815410: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-05-19 11:07:10.815438: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 1 2 3 4 5 6 7 
+2020-05-19 11:07:10.815450: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N Y Y Y Y Y Y Y 
+2020-05-19 11:07:10.815457: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 1:   Y N Y Y Y Y Y Y 
+2020-05-19 11:07:10.815463: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 2:   Y Y N Y Y Y Y Y 
+2020-05-19 11:07:10.815472: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 3:   Y Y Y N Y Y Y Y 
+2020-05-19 11:07:10.815479: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 4:   Y Y Y Y N Y Y Y 
+2020-05-19 11:07:10.815487: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 5:   Y Y Y Y Y N Y Y 
+2020-05-19 11:07:10.815494: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 6:   Y Y Y Y Y Y N Y 
+2020-05-19 11:07:10.815501: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 7:   Y Y Y Y Y Y Y N 
+2020-05-19 11:07:10.845391: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7834 MB memory) -> physical GPU (device: 0, name: TITAN X (Pascal), pci bus id: 0000:04:00.0, compute capability: 6.1)
+2020-05-19 11:07:10.848016: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 8706 MB memory) -> physical GPU (device: 1, name: TITAN X (Pascal), pci bus id: 0000:06:00.0, compute capability: 6.1)
+2020-05-19 11:07:10.851738: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:2 with 10831 MB memory) -> physical GPU (device: 2, name: TITAN X (Pascal), pci bus id: 0000:07:00.0, compute capability: 6.1)
+2020-05-19 11:07:10.853933: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:3 with 9279 MB memory) -> physical GPU (device: 3, name: TITAN X (Pascal), pci bus id: 0000:08:00.0, compute capability: 6.1)
+2020-05-19 11:07:10.856190: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:4 with 952 MB memory) -> physical GPU (device: 4, name: TITAN X (Pascal), pci bus id: 0000:0c:00.0, compute capability: 6.1)
+2020-05-19 11:07:10.858763: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:5 with 7334 MB memory) -> physical GPU (device: 5, name: TITAN X (Pascal), pci bus id: 0000:0d:00.0, compute capability: 6.1)
+2020-05-19 11:07:10.860969: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:6 with 9805 MB memory) -> physical GPU (device: 6, name: TITAN X (Pascal), pci bus id: 0000:0e:00.0, compute capability: 6.1)
+2020-05-19 11:07:10.863633: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:7 with 9279 MB memory) -> physical GPU (device: 7, name: TITAN X (Pascal), pci bus id: 0000:0f:00.0, compute capability: 6.1)
+
+In [20]: len(fla)                                                                                                                                            
+Out[20]: 1024
+
+In [21]: fla                                                                                                                                                 
+Out[21]: 
+<tf.Tensor: shape=(1024,), dtype=float32, numpy=
+array([-11.551537, -37.500793,  60.68316 , ...,  64.95945 ,  74.479774,
+        29.061512], dtype=float32)>
+
+In [22]: fla = tf.reduce_sum(emb, 0)                                                                                                                         
+
+In [23]: train = [l.split() for l in train]                                                                                                                  
+
+In [24]: test = [l.split() for l in test]                                                                                                                    
+
+In [25]: len(train)                                                                                                                                          
+Out[25]: 2342
+
+In [26]: train[0]                                                                                                                                            
+Out[26]: 
+['女生',
+ '发表',
+ '轻生',
+ '日志',
+ '获',
+ '网友',
+ '连夜',
+ '搜',
+ '救',
+ '本报',
+ '讯',
+ '永别',
+ '朋友',
+ '永别',
+ '世界',
+ '前天',
+ '晚上',
+ '清华',
+ '毕业',
+ '女生',
+ '小陈',
+ '网',
+ '主页',
+ '写下',
+ '日志',
+ '后',
+ '失踪',
+ '日志',
+ '中',
+ '表示',
+ '欲',
+ '寻短见',
+ '得知',
+ '消息',
+ '校友',
+ '途径',
+ '连夜',
+ '发起',
+ '搜',
+ '救',
+ '昨天',
+ '上午',
+ '记者',
+ '了解',
+ '民警',
+ '已经',
+ '找到',
+ '小陈',
+ '已经',
+ '危险',
+ '了解',
+ '小',
+ '陈',
+ '本科',
+ '研究生',
+ '分别',
+ '就读',
+ '中国',
+ '传媒',
+ '大学',
+ '清华大学',
+ '今年',
+ '毕业',
+ '后',
+ '进入',
+ '国家机关',
+ '下属',
+ '媒体',
+ '工作',
+ '前天',
+ '晚上',
+ '7点',
+ '44分',
+ '小陈',
+ '网',
+ '主页',
+ '发表',
+ '篇',
+ '题为',
+ '永别',
+ '朋友',
+ '日志',
+ '后',
+ '失踪',
+ '篇',
+ '日志',
+ '很快',
+ '引起',
+ '关注',
+ '当天',
+ '晚上',
+ '10点',
+ '关注',
+ '清华大学',
+ '微',
+ '博',
+ '协会',
+ '会长',
+ '刘若晴',
+ '微',
+ '博',
+ '发布',
+ '紧急',
+ '寻',
+ '人',
+ '信息',
+ '呼吁',
+ '网友',
+ '路',
+ '留',
+ '心眼',
+ '儿',
+ '救人',
+ '命',
+ '随后',
+ '网友',
+ '展开',
+ '搜',
+ '救',
+ '昨天',
+ '上午',
+ '条',
+ '寻找',
+ '小',
+ '陈',
+ '微',
+ '博',
+ '已',
+ '转发',
+ '8000',
+ '次',
+ '小陈',
+ '同学',
+ '寻',
+ '遍',
+ '宣武门',
+ '长椿',
+ '街',
+ '西单',
+ '传媒',
+ '大学',
+ '清华大学',
+ '不断',
+ '网上',
+ '交流',
+ '搜',
+ '救',
+ '信息',
+ '汇总',
+ '清华大学',
+ '微',
+ '博',
+ '协会',
+ '微',
+ '博',
+ '从前',
+ '晚',
+ '10点',
+ '昨天',
+ '凌晨',
+ '3点',
+ '小时',
+ '新',
+ '搜',
+ '救',
+ '信息',
+ '上面',
+ '发布',
+ '昨天',
+ '上午',
+ '北京市',
+ '公安局',
+ '官方',
+ '微',
+ '博',
+ '发布消息',
+ '称',
+ '北京',
+ '警方',
+ '积极',
+ '努力',
+ '开展',
+ '相关',
+ '工作',
+ '随后',
+ '市',
+ '公安局',
+ '勤务',
+ '指挥部',
+ '传来',
+ '好',
+ '消息',
+ '警方',
+ '连夜',
+ '工作',
+ '民警',
+ '丰台',
+ '六里桥',
+ '附近',
+ '找到',
+ '同学',
+ '同学',
+ '平安无事',
+ '现场',
+ '自杀',
+ '情况',
+ '危险',
+ '民警',
+ '正在',
+ '进一步',
+ '调查',
+ '中']
+
+In [27]: len(test)                                                                                                                                           
+Out[27]: 2228
+
+In [28]: train_res = []                                                                                                                                      
+
+In [29]: test_res = []                                                                                                                                       
+
+In [30]: for l in train[:2]: 
+    ...:     print(tf.reduce_sum(bc.encode([l]), 0)) 
+    ...:                                                                                                                                                     
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-30-b90f2b491f5e> in <module>
+      1 for l in train[:2]:
+----> 2     print(tf.reduce_sum(bc.encode([l]), 0))
+      3 
+
+~/anaconda3/lib/python3.6/site-packages/bert_serving/client/__init__.py in arg_wrapper(self, *args, **kwargs)
+    204                 self.receiver.setsockopt(zmq.RCVTIMEO, self.timeout)
+    205             try:
+--> 206                 return func(self, *args, **kwargs)
+    207             except zmq.error.Again as _e:
+    208                 t_e = TimeoutError(
+
+~/anaconda3/lib/python3.6/site-packages/bert_serving/client/__init__.py in encode(self, texts, blocking, is_tokenized, show_tokens)
+    285             self._check_input_lst_lst_str(texts)
+    286         else:
+--> 287             self._check_input_lst_str(texts)
+    288 
+    289         if self.length_limit is None:
+
+~/anaconda3/lib/python3.6/site-packages/bert_serving/client/__init__.py in _check_input_lst_str(texts)
+    398         for idx, s in enumerate(texts):
+    399             if not isinstance(s, _str):
+--> 400                 raise TypeError('all elements in the list must be %s, but element %d is %s' % (type(''), idx, type(s)))
+    401             if not s.strip():
+    402                 raise ValueError(
+
+TypeError: all elements in the list must be <class 'str'>, but element 0 is <class 'list'>
+
+In [31]: for l in train[:2]: 
+    ...:     print(l) 
+    ...:      
+    ...:                                                                                                                                                     
+['女生', '发表', '轻生', '日志', '获', '网友', '连夜', '搜', '救', '本报', '讯', '永别', '朋友', '永别', '世界', '前天', '晚上', '清华', '毕业', '女生', '小陈', '网', '主页', '写下', '日志', '后', '失踪', '日志', '中', '表示', '欲', '寻短见', '得知', '消息', '校友', '途径', '连夜', '发起', '搜', '救', '昨天', '上午', '记者', '了解', '民警', '已经', '找到', '小陈', '已经', '危险', '了解', '小', '陈', '本科', '研究生', '分别', '就读', '中国', '传媒', '大学', '清华大学', '今年', '毕业', '后', '进入', '国家机关', '下属', '媒体', '工作', '前天', '晚上', '7点', '44分', '小陈', '网', '主页', '发表', '篇', '题为', '永别', '朋友', '日志', '后', '失踪', '篇', '日志', '很快', '引起', '关注', '当天', '晚上', '10点', '关注', '清华大学', '微', '博', '协会', '会长', '刘若晴', '微', '博', '发布', '紧急', '寻', '人', '信息', '呼吁', '网友', '路', '留', '心眼', '儿', '救人', '命', '随后', '网友', '展开', '搜', '救', '昨天', '上午', '条', '寻找', '小', '陈', '微', '博', '已', '转发', '8000', '次', '小陈', '同学', '寻', '遍', '宣武门', '长椿', '街', '西单', '传媒', '大学', '清华大学', '不断', '网上', '交流', '搜', '救', '信息', '汇总', '清华大学', '微', '博', '协会', '微', '博', '从前', '晚', '10点', '昨天', '凌晨', '3点', '小时', '新', '搜', '救', '信息', '上面', '发布', '昨天', '上午', '北京市', '公安局', '官方', '微', '博', '发布消息', '称', '北京', '警方', '积极', '努力', '开展', '相关', '工作', '随后', '市', '公安局', '勤务', '指挥部', '传来', '好', '消息', '警方', '连夜', '工作', '民警', '丰台', '六里桥', '附近', '找到', '同学', '同学', '平安无事', '现场', '自杀', '情况', '危险', '民警', '正在', '进一步', '调查', '中']
+['客机', '起飞', '小时', '后', '机舱', '冒烟', '返航', '昨天', '上午', '8点', '25分', '左右', '首都', '国际', '机场', '起飞', '小时', '架', '美', '航', 'AA186', '次', '航班', '机舱', '冒烟', '折返', '降落', '事后', '返航', '乘客', '安排', '附近', '酒店', '下午', '5点', '乘客', '接', '航空公司', '答复', '改', '今天', '上午', '10点', '航班', '再次', '起飞', '希望', '次', '顺利', '到达', '乘客', '表示', '机舱', '冒烟', '客机', '返航', '飞机', '飞', '飞', '冒烟', '北京', '回来', '昨天', '上午', '位', '网友', '微', '博', '透露', '乘坐', '美国', '航空公司', 'AA186', '次', '航班', '北京', '芝加哥', '飞机', '起飞', '后', '客舱', '突然', '烟', '最终', '飞机', '返航', '元旦', '北京', '度过', '真是', '悲剧', '飞机', '起飞', '紧急', '返航', '此刻', 'T3', '位', '网友', '全', '熊', '小', '猫', '微', '博', '直播', '次', '遭遇', '记者', '联系', '时', '已', '航空公司', '安排', '附近', '酒店', '姓', '黄', '美国', '上学', '留学生', '次', '芝加哥', '中途', '换乘', '黄', '女士', '告诉', '记者', '事发', '时', '上午', '8点', '25分', '飞机', '已经', '起飞', '小时', '突然', '机舱', '飘', '股', '浓浓的', '异味', '儿', '有点', '烟', '味儿', '广播', '中', '机长', '声音', '证实', '一点', '说', '飞机', '临时', '出现', '机械', '故障', '导致', '机舱', '冒烟', '需要', '返航', '降落', '记者', '查询', '发现', '美', '航', 'AA186', '次', '航班', '首都', '机场', '正点', '起飞', '时间', '7点', '55分', '留学生', '临时', '翻译', '昨天', '上午', '8点', '55分', 'AA186', '次', '航班', '起飞', '小时', '后', '重新', '降落', '首都', '国际', '机场', '整个', '过程', '无', '人', '受伤', '黄', '女士', '称', '飞机', '落地', '之后', '机', '舱门', '迟迟', '未', '打开', '部分', '乘客', '着急', '不断', '身边', '乘务员', '询问', '空姐', '懂', '中文', '机舱', '气氛', '一度', '些', '混乱', '懂', '英文', '乘客', '帮忙', '翻译', '一下', '机舱', '紧张', '气氛', '平息', '下来', '黄', '女士', '称', '帮忙', '翻译', '意思', '说', '飞机', '已经', '安全', '落地', '请', '乘客', '耐心', '等待', '地面', '空勤', '人员', '正在', '舷梯', '接', '一会儿', '下', '飞机', '微', '博', '黄', '女士', '次', '特殊', '翻译', '经历', '晒', '机上', '空姐', '讲', '中文', '找', '翻译', '体验', '次', '小', '喇叭', '广播', '手', '感觉', '乘客', '今天', '上午', '再', '起程', '事后', '航空公司', 'AA186', '全部', '乘客', '安排', '酒店', '架飞机', '波音', '777', '满员', '乘客', '估计', '300', '人', '外籍', '乘客', '希尔顿', '酒店', '国内', '乘客', '丽', '酒店', '黄', '女士', '透露', '酒店', '呆', '长时间', '航空公司', '却', '一直', '无', '人', '出面', '解释', '答复', '下', '步', '赔偿', '问题', '无从', '谈', '昨天', '下午', '记者', '联系', '丽', '酒店', '负责', '协调', '返航', '乘客', '负责人', '称', '受', '美', '航', '公司', '委托', '负责', '协调', '乘客', '飞机', '再次', '起飞', '知晓', '首都', '机场', '负责', '乘客', '改', '签', '工作', '美', '航', '工作人员', '透露', '目前', '尚未', '接', '上级', '批', '乘客', '改', '签', '起飞', '具体', '通知', '飞机', '返航', '具体', '原因', '赔偿', '问题', '记者', '采访', '美', '航', '北京', '办事处', '媒体', '传媒', '部', '昨天', '下午', '记者', '连续', '拨打', '办事处', '电话', '十几', '次', '无', '人', '接', '听', '首都', '机场', '美', '航', '公司', '工作人员', '拒绝', '记者', '转达', '采访', '意图', '昨天', '下午', '5点', '黄', '女士', '致电', '记者', '称', '航空公司', '通知', '乘坐', '今天', '上午', '10点', '航班', '再次', '起飞', '一大早', '机场', '等候', '工作人员', '带领', '取', '行李', '希望', '次', '顺利', '到达', '黄', '女士', '提前', '送', '份', '新年', '祝福', '晨报', '96101', '热线', '新闻记者', '岳', '亦', '雷', '线索', '祝', '先生', '■', '新闻', '链接', '次', '航班', '曾', '冒烟', '返航', '记录', '2010年', '12月', '16日', '上午', '10时', '许', '美国', '航空公司', '北京', '飞往', '芝加哥', 'AA186', '航班', '起飞', '小时', '后', '客舱', '突然', '烟', '机长', '决定', '返航', '首都', '机场', '解释', '称', '返航', '空调系统', '故障', '机场', '运行', '未', '受', '影响', '美国', '航空公司', '北京', '代表处', '表示', '故障', '未', '造成', '人员', '伤亡']
+
+In [32]:                                                                                                                                                     
+
+In [32]: for l in train[:2]: 
+    ...:     print(tf.reduce_sum(bc.encode(l), 0)) 
+    ...:      
+    ...:                                                                                                                                                     
+tf.Tensor([-11.551537 -37.500793  60.68316  ...  64.95945   74.479774  29.061512], shape=(1024,), dtype=float32)
+tf.Tensor([-35.66121 -92.74007 143.56677 ... 171.12961 185.59349  92.91852], shape=(1024,), dtype=float32)
+
+In [33]: for l in train[:2]: 
+    ...:     print(tf.reduce_mean(bc.encode(l), 0)) 
+    ...:      
+    ...:      
+    ...:                                                                                                                                                     
+tf.Tensor(
+[-0.05448838 -0.17689054  0.28624132 ...  0.3064125   0.3513197
+  0.1370826 ], shape=(1024,), dtype=float32)
+tf.Tensor(
+[-0.06884404 -0.17903487  0.27715594 ...  0.33036605  0.3582886
+  0.17937937], shape=(1024,), dtype=float32)
+
+In [34]: for l in train: 
+    ...:     train_res.append(tf.reduce_mean(bc.encode(l), 0)) 
+    ...:      
+    ...:      
+    ...:      
+    ...:                                                                                                                                                     
